@@ -52,8 +52,8 @@ const testData = {
   jltNumbers: jltNumbers
 };
 
-const should = require('should');
-const jlt = require('..');
+import should from 'should';
+import { JSONLTree } from "../index.js";
 
 suite('jsonl-tree', () => {
   test('test deepEqual', (done) => {
@@ -61,23 +61,35 @@ suite('jsonl-tree', () => {
     done();
   });
   test('getIndentation() works with spaces', (done) => {
-    should(jlt.getIndentation('  {"this": "is", "a": "test"}').level).equal(2);
+    should(JSONLTree.getIndentation('  {"this": "is", "a": "test"}').level).equal(2);
     done();
   });
   test('getIndentation() works with numbers', (done) => {
-    should(jlt.getIndentation('2{"this": "is", "a": "test"}').level).equal(2);
+    should(JSONLTree.getIndentation('2{"this": "is", "a": "test"}').level).equal(2);
     done();
   });
   test('convert jsonltree with spaces to JSON', (done) => {
-    should(jlt.jsonltree(testData.jltSpaces)).deepEqual(testData.json);
+    should(new JSONLTree(testData.jltSpaces).toJSON()).deepEqual(testData.json);
     done();
   });
   test('convert jsonltree with number indentation to JSON', (done) => {
-    should(jlt.jsonltree(testData.jltNumbers)).deepEqual(testData.json);
+    should(JSONLTree.fromString(testData.jltNumbers).toJSON()).deepEqual(testData.json);
     done();
   });
   test('convert jsonltree with doubled spaces to JSON', (done) => {
-    should(jlt.jsonltree(testData.jltSpaces2)).deepEqual(testData.json);
+    should(JSONLTree.parse(testData.jltSpaces2)).deepEqual(testData.json);
+    done();
+  });
+  test('convert json to jsonltree string', (done) => {
+    should(JSONLTree.fromJson(testData.json).toString()).deepEqual(testData.jltSpaces2);
+    done();
+  });
+  test('convert json to jsonltree string', (done) => {
+    should(new JSONLTree(testData.json).toString()).deepEqual(testData.jltSpaces2);
+    done();
+  });
+  test('convert json to jsonltree string', (done) => {
+    should(JSONLTree.stringify(testData.json)).deepEqual(testData.jltNumbers);
     done();
   });
 });

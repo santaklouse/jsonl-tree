@@ -72,8 +72,28 @@ Note that currently jsonl-tree only handles the nesting of objects by way of a s
 
 ## Installation
 
+```shell
+npm i jsonl-tree
 ```
-npm install
+
+```javascript
+import {JSONLTree} from "jsonl-tree";
+
+...
+
+const jlt = JSONLTree.fromJson(json1);
+
+console.log('toString:', jlt.toString());
+
+console.log('toJSON', jlt.toJSON());
+
+// clear and fill it from file
+const json2 = jlt.clear().fromFile(jltFilePath).toJSON();
+
+// ensure that objects equals
+should(json2).deepEqual(json1, 'deepEqual message');
+
+const jlt2 = new JSONLTree().fromFile(jltFilePath).toJSON();
 ```
 
 ## Testing
